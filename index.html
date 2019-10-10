@@ -36,8 +36,8 @@
     
     
     
-    $("button").on("click", function () {
-        var team = $(this(teams[i]));
+    $("#buttons-dump").on("click", 'button',function () {
+        var team = $(this).attr("data-name");
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + team + "&api_key=L5ZEm4mMU3RGJNDRegpThdXLHyvzj1O0";
         
         $.ajax({
@@ -47,6 +47,7 @@
         
             .then(function(response) {
                 var results = response.data;
+                console.log(results);
 
                 for (var i = 0; i < results.length; i++) {
                     if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
