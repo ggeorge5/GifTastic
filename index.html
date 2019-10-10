@@ -23,6 +23,9 @@
         <!--Here is the button that will trigger new teams-->
         <input id="add-team" type="submit" value="Add a sports team!">
     </form>
+
+    <div id="team-gifs-appear-here">
+    </div>
     
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -31,12 +34,36 @@
     //initial array of sports teams
     var teams = ["Kansas City Chiefs", "Kansas City Royals", "Sporting Kansas City", "Saint Louis Blues"];
     
+    
+    
+    $("button").on("click", function () {
+        var team = $(this(teams[i]));
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + team + "&api_key=L5ZEm4mMU3RGJNDRegpThdXLHyvzj1O0";
+        
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        })
+        
+            .then(function(response) {
+                var results = response.data;
 
+                for (var i = 0; i < results.length; i++) {
+                    if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+                        var gifDiv = $("<div>");
+                        var rating = results[i].rating;
+                        var p = $("<p>").text("Rating: " + rating);
+                        var teamImage = $("<img>");
+                        teamImage.attr("src", results[i].images.fixed_height.url);
+                        gifDiv.append(p);
+                        gifDiv.append(teamImage);
 
-    function alertTeamName () {
-        var teamName = $(this).attr("data-name");
-        alert(teamName);
-    }
+                        $("#team-gifs-appear-here").prepend(gifDiv);
+                    }
+                }
+            });
+    });
+
 
 
     function renderButtons() {
@@ -54,13 +81,10 @@
     //Function handles events where one button is clicked
     $("#add-team").on("click", function(event) {
         event.preventDefault();
-        var team = $("#team-input").val().trim();
-        teams.push(team);
+        var teamSelected = $("#team-input").val().trim();
+        teams.push(teamSelected);
         renderButtons();
     });
-
-
-    $(document).on("click", ".team", alertTeamName);
 
     renderButtons();
     
