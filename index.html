@@ -13,35 +13,41 @@
     <h1>Your Favorite Sports Teams</h1>
     
     <!--Buttons will be dumped here-->
-    <div id="button-dump"></div>
+    <div id="buttons-dump"></div>
  
-    <div>
-        <form id="movie-input">
-            <label for="team-input">Add your favorite sports team!</label>
-            <input type="text" id="team-input"><br>
+    
+    <form id="team-form">
+        <label for="team-input">Add your favorite sports team!</label>
+        <input type="text" id="team-input"><br>
 
-            <!--Here is the button that will trigger new teams-->
-            <input id="add-team" type="submit" value="Add a sports team!">
-        </form>
-    </div>
-
-    </div>
+        <!--Here is the button that will trigger new teams-->
+        <input id="add-team" type="submit" value="Add a sports team!">
+    </form>
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
 
     //initial array of sports teams
-    var teams = ["Chiefs", "Royals", "Sporting Kansas City", "Saint Louis Blues"];
+    var teams = ["Kansas City Chiefs", "Kansas City Royals", "Sporting Kansas City", "Saint Louis Blues"];
     
+
+
+    function alertTeamName () {
+        var teamName = $(this).attr("data-name");
+        alert(teamName);
+    }
+
+
     function renderButtons() {
-        $("#button-dump").empty();
+        $("#buttons-dump").empty();
 
         for (var i = 0; i < teams.length; i++) {
             var a = $("<button>");
             a.addClass("team");
             a.attr("data-name", teams[i]);
             a.text(teams[i]);
-            $("#button-dump").append(a);
+            $("#buttons-dump").append(a);
         }
     }
 
@@ -51,7 +57,10 @@
         var team = $("#team-input").val().trim();
         teams.push(team);
         renderButtons();
-    })
+    });
+
+
+    $(document).on("click", ".team", alertTeamName);
 
     renderButtons();
     
