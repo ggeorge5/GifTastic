@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>GifTastic</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     
 </head>
 <body>
     
-    <div class="container">
-    <h1>Your Favorite Sports Teams</h1>
+    <div class="container card-body">
+    <h1 class="card-header">Your Favorite Sports Teams</h1>
     
     <!--Buttons will be dumped here-->
     <div id="buttons-dump"></div>
@@ -29,6 +30,7 @@
     
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
     <script type="text/javascript">
 
     //initial array of sports teams
@@ -46,10 +48,10 @@
         })
         
             .then(function(response) {
-                var results = response.data;
+                 var results = response.data;
                 console.log(results);
 
-                for (var i = 0; i < results.length; i++) {
+                for (var i = 0; i < 10; i++) {
                     if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
                         var gifDiv = $("<div>");
                         var rating = results[i].rating;
@@ -59,7 +61,23 @@
                         gifDiv.append(p);
                         gifDiv.append(teamImage);
 
+
+
+                        //Here I attempted a function to make the images pause. I couldnt quite figure it out. 
+                        
                         $("#team-gifs-appear-here").prepend(gifDiv);
+                        gifDiv[0].querySelector('img').addEventListener('click', function () {
+                            
+                            var state = $(this).attr("data-state");
+
+                            if (state === "still") {
+                                $(this).attr("src", $(this).attr("data-animate"));
+                                $(this).attr("data-state", "animate");
+                            } else {
+                                $(this).attr("src", $(this).attr("data-still"));
+                                $(this).attr("data-state", "still");
+                            }
+                         });
                     }
                 }
             });
@@ -72,7 +90,7 @@
 
         for (var i = 0; i < teams.length; i++) {
             var a = $("<button>");
-            a.addClass("team");
+            a.addClass("team btn btn-secondary");
             a.attr("data-name", teams[i]);
             a.text(teams[i]);
             $("#buttons-dump").append(a);
@@ -86,13 +104,14 @@
         teams.push(teamSelected);
         renderButtons();
     });
-
     renderButtons();
     
     
     
     
     </script>
+    <div class="card-footer"></div>
 </div>
+
 </body>
 </html>
